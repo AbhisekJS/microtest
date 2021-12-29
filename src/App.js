@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, useEffect } from "react";
+import {Row,Col, Spin} from "antd";
+import { getPosts } from "./actions/posts";
+import { useDispatch, useSelector } from "react-redux";
+const TableView = React.lazy(() => import("./components/TableView"));
 
-function App() {
+export default function App() {
+  const dispatch = useDispatch();
+  // const[list,setList]=useState([])
+  const {
+    posts: { posts: items },
+  } = useSelector((state) => state);
+  console.log("posts", items);
+
+  useEffect(() => {
+    dispatch(getPosts());
+    //eslint-disable-next-line
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Suspense
+      fallback={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Spin />
+        </div>
+      }
+    >
+        <Row style={{marginTop:'2rem'}}>
+          <Col span={12} offset={6}>
+            <TableView data={items} />
+          </Col>
+        </Row>
+    </Suspense>
   );
 }
-
-export default App;
