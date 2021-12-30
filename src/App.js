@@ -34,7 +34,7 @@ export default function App() {
       }
     >
         <Row style={{marginTop:'2rem'}}>
-          <Col span={12} offset={6}>
+          <Col xs={{span:24}} md={{span:18,offset:3}}>
             <TableView data={items} />
           </Col>
         </Row>
